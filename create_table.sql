@@ -16,7 +16,7 @@ CREATE TABLE BOOK
 CREATE TABLE ACCOUNT
 (
     ID      VARCHAR(15)     NOT NULL,
-    Password    VARCHAR(15)     NOT NULL,
+    Password    VARCHAR(64)     NOT NULL,
     Name    VARCHAR(15)     NOT NULL,
     Email   VARCHAR(30)     NOT NULL,
     Phone   VARCHAR(15),
