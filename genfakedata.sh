@@ -97,7 +97,7 @@ done
 for i in {1..128}; do
 	cat <<-EOF >>insert.sql
 	INSERT INTO TRANSLATOR (Language, Name, ID)
-	VALUES ($(shuf -e -n1 en ko fr cn de), 'Translator${i}', 'ID${i}');
+	VALUES ('$(shuf -e -n1 en ko fr cn de)', 'Translator${i}', 'ID${i}');
 	EOF
 done
 
