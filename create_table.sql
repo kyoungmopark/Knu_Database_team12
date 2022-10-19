@@ -5,7 +5,7 @@ CREATE TABLE BOOK
     Summary VARCHAR(100)    NOT NULL, 
     Language VARCHAR(15)    NOT NULL,
     Price   INT     NOT NULL,
-    State   BOOL    NOT NULL,
+    State   INT    NOT NULL,
     Page    INT     NOT NULL,
     PRIMARY KEY (ISBN)
 );
@@ -27,21 +27,21 @@ CREATE TABLE RATING
 );
 CREATE TABLE ACCOUNT
 (
-    ID      VARCHAR(15)     NOT NULL,
+    Account_ID      VARCHAR(15)     NOT NULL,
     Password    VARCHAR(15)     NOT NULL,
     Name    VARCHAR(15)     NOT NULL,
     Email   VARCHAR(30)     NOT NULL,
     Phone   VARCHAR(15),
-    PRIMARY KEY (ID) 
+    PRIMARY KEY (Account_ID) 
 );
 CREATE TABLE ADMIN
 (
-    ID      VARCHAR(15)     NOT NULL,
+    Admin_ID      VARCHAR(15)     NOT NULL,
     Password    VARCHAR(15)     NOT NULL,
     Name    VARCHAR(15)     NOT NULL,
     Email   VARCHAR(30)     NOT NULL,
     Phone   VARCHAR(15),
-    PRIMARY KEY (ID),
+    PRIMARY KEY (Admin_ID)
 );
 CREATE TABLE GENRE
 (
@@ -61,7 +61,7 @@ CREATE TABLE TRANSLATOR
     Translator_ID  VARCHAR(15)     NOT NULL,
     Name    VARCHAR(15)     NOT NULL,
     Language     VARCHAR(15)     NOT NULL,
-    PRIMARY KEY (Translator_ID),
+    PRIMARY KEY (Translator_ID)
 );
 CREATE TABLE AUTHOR
 (
@@ -70,6 +70,6 @@ CREATE TABLE AUTHOR
     Brith_year  DATE    NOT NULL,
     Death_year  DATE,
     Nationality VARCHAR(15)     NOT NULL,
-    PRIMARY KEY (Author_ID),
+    PRIMARY KEY (Author_ID)
 );
 
