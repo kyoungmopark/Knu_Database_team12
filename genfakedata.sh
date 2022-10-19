@@ -2,6 +2,8 @@
 
 set -o errexit -o nounset -o noglob -o pipefail
 
+echo "SET DEFINE OFF;" >>insert.sql
+
 # Generate data for Book Entity
 IFS=$(echo -en "\n\b")
 for book in $(cat books.csv); do
@@ -159,8 +161,7 @@ isbns=$(awk -F "," '{ print $5 }' books.csv)
 for isbn in ${isbns}; do
 	genre_id=$(( RANDOM % $(echo "${genres}" | wc -l)))
 	cat <<-EOF >>insert.sql
-	INSERT INTO BELONG (Genre_ID, Book_ID)
-	VALUES ('${genre_id}', '${isbn}');
+	INSERT INTO BELONG (Genre_ID, Book_ID) VALUES ('${genre_id}', '${isbn}');
 	EOF
 done
 
@@ -181,9 +182,9 @@ admin_ids=$(echo {1..5} | sed 's/\([0-9]*\)/ID\1\n/g' | tr -d ' ')
 for isbn in ${isbns}; do
 	admin_id=$(echo "${admin_ids}" | shuf -n1)
 	cat <<-EOF >>insert.sql
-	INSERT INTO MANAGES (Admin_ID, Book_ID)
-	VALUES ('${admin_id}', '${isbn}');
+	INSERT INTO MANAGES (Admin_ID, Book_ID) VALUES ('${admin_id}', '${isbn}');
 	EOF
 done
 
 echo "COMMIT;" >>insert.sql
+echo "SET DEFINE ON;" >>insert.sql
