@@ -76,7 +76,7 @@ for i in {1..128}; do
 	death=$(( birth + RANDOM % 100 ))
 	cat <<-EOF >>insert.sql
 	INSERT INTO AUTHOR (Name, Birth_year, Death_year, ID, Nationality)
-	VALUES ('Author${i}', '${birth}', '${death}', 'ID${i}', '$(shuf -e -n1 en ko fr cn de)');
+	VALUES ('Author${i}', TO_DATE('${birth}', 'yyyy'), TO_DATE('${death}', 'yyyy'), 'ID${i}', '$(shuf -e -n1 en ko fr cn de)');
 	EOF
 done
 
