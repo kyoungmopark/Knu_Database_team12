@@ -4,7 +4,7 @@ set -o errexit -o nounset -o noglob -o pipefail
 
 echo "SET DEFINE OFF;" >>insert.sql
 
-# Generate data for Book Entity
+# Generate data for BOOK Entity
 IFS=$(echo -en "\n\b")
 for book in $(cat books.csv); do
 	book=$(echo ${book} | sed "s/'/''/g")
@@ -26,7 +26,7 @@ done
 unset IFS
 
 
-# Generate data for Account Entity
+# Generate data for ACCOUNT Entity
 for i in {1..32}; do
 	password=$(echo ${RANDOM} | md5sum | awk '{ print $1 }')
 	phone=$(shuf -e -n1 010 011)-$(printf "%4d" $((RANDOM % 9999)))-$(printf "%4d" $((RANDOM % 9999)))
@@ -55,7 +55,7 @@ for i in {1..32}; do
 done
 
 
-# Generate data for Rating Entity
+# Generate data for RATING Entity
 for i in {1..32}; do
 	cnt=$(( RANDOM % 9 + 1 ))
 	isbns=$(awk -F "," '{ print $5 }' books.csv | shuf -n${cnt})
@@ -70,7 +70,7 @@ for i in {1..32}; do
 done
 
 
-# Generate data for Author Entity
+# Generate data for AUTHOR Entity
 for i in {1..128}; do
 	birth=$(( RANDOM % 2000 ))
 	death=$(( birth + RANDOM % 100 ))
@@ -134,7 +134,7 @@ for isbn in ${isbns}; do
 done
 
 
-# Generate data for Genre Entity
+# Generate data for GENRE Entity
 genres="Science Fiction
 Fantasy
 Horror
@@ -151,7 +151,7 @@ Humor"
 id=0
 IFS=$(echo -en "\n\b")
 for genre in ${genres}; do
-	echo "INSERT INTO GENRE (Genre, ID) VALUES ('${genre}', ${id});" >>insert.sql
+	echo "INSERT INTO GENRE (ID, Genre) VALUES ('ID${id}', '${genre}');" >>insert.sql
 	id=$(( id + 1 ))
 done
 unset IFS
@@ -159,14 +159,14 @@ unset IFS
 # Generate data for BELONG Entity
 isbns=$(awk -F "," '{ print $5 }' books.csv)
 for isbn in ${isbns}; do
-	genre_id=$(( RANDOM % $(echo "${genres}" | wc -l)))
+	genre_id="ID$(( RANDOM % $(echo "${genres}" | wc -l)))"
 	cat <<-EOF >>insert.sql
 	INSERT INTO BELONG (Genre_ID, Book_ID) VALUES ('${genre_id}', '${isbn}');
 	EOF
 done
 
 
-# Generate data for Admin Entity
+# Generate data for ADMIN Entity
 for i in {1..5}; do
 	phone=$(shuf -e -n1 010 011)-$(printf "%4d" $((RANDOM % 9999)))-$(printf "%4d" $((RANDOM % 9999)))
 	password=$(echo ${RANDOM} | md5sum | awk '{ print $1 }')
