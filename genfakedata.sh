@@ -113,7 +113,7 @@ for isbn in ${isbns}; do
 done
 
 
-# Generate data for Publisher Entity
+# Generate data for PUBLISHER Entity
 for i in {1..128}; do
 	address=$(shuf -e -n1 Daegu Pohang Seoul Incheon)
 	cat <<-EOF >>insert.sql
@@ -171,7 +171,7 @@ for i in {1..5}; do
 	phone=$(shuf -e -n1 010 011)-$(printf "%4d" $((RANDOM % 9999)))-$(printf "%4d" $((RANDOM % 9999)))
 	password=$(echo ${RANDOM} | md5sum | awk '{ print $1 }')
 	cat <<-EOF >>insert.sql
-	INSERT INTO PUBLISHER (ID, Password, Name, Email, Phone)
+	INSERT INTO ADMIN (ID, Password, Name, Email, Phone)
 	VALUES ('ID${i}', '${password}', 'Name${i}', 'admin${i}@email.net', '${phone}');
 	EOF
 done
