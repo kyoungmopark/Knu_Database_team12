@@ -48,7 +48,7 @@ for i in {1..32}; do
 		borrow_date="${year}-${month}-${day}"
 		return_date=$(( year + RANDOM % 5 ))-$(( month + RANDOM % 7 ))-$(( day + RANDOM % 8 ))
 		cat <<-EOF >>insert.sql
-		INSERT INTO BORROW (Account_ID, ISBN, Borrow_date, Return_date)
+		INSERT INTO BORROW (Account_ID, Book_ID, Borrow_date, Return_date)
 		VALUES ('User${i}', '${x}', TO_DATE('${borrow_date}', 'yyyy-mm-dd'), TO_DATE('${return_date}', 'yyyy-mm-dd'));
 		EOF
 	done
@@ -63,7 +63,7 @@ for i in {1..32}; do
 		rating=$(( RANDOM % 100 ))
 		comment="Comment of User${i} to ${isbn} for Testing"
 		cat <<-EOF >>insert.sql
-		INSERT INTO RATING (Book_ID, Account_ID, Rating, Comment)
+		INSERT INTO RATING (Book_ID, Account_ID, Rating, Review)
 		VALUES ('${isbn}', 'User${i}', ${rating}, '${comment}');
 		EOF
 	done
@@ -76,7 +76,7 @@ for i in {1..128}; do
 	death=$(( birth + RANDOM % 100 ))
 	cat <<-EOF >>insert.sql
 	INSERT INTO AUTHOR (Name, Birth_year, Death_year, ID, Nationality)
-	VALUES ('Author${i}', '${birth}', '${death}', 'ID${i}', $(shuf -e -n1 en ko fr cn de));
+	VALUES ('Author${i}', '${birth}', '${death}', 'ID${i}', '$(shuf -e -n1 en ko fr cn de)');
 	EOF
 done
 
