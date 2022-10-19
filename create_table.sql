@@ -38,7 +38,7 @@ CREATE TABLE RATING
 CREATE TABLE ADMIN
 (
     ID      VARCHAR(15)     NOT NULL,
-    Password    VARCHAR(15)     NOT NULL,
+    Password    VARCHAR(64)     NOT NULL,
     Name    VARCHAR(15)     NOT NULL,
     Email   VARCHAR(30)     NOT NULL,
     Phone   VARCHAR(15),
