@@ -1,8 +1,8 @@
-CREATE TABLE BOOK 
+CREATE TABLE BOOK
 (
-    ISBN    CHAR(13)    NOT NULL, 
-    Title   VARCHAR(50)     NOT NULL,
-    Summary VARCHAR(100)    NOT NULL, 
+    ISBN    CHAR(13)    NOT NULL,
+    Title   VARCHAR(256)     NOT NULL,
+    Summary VARCHAR(100)    NOT NULL,
     Language VARCHAR(15)    NOT NULL,
     Price   INT     NOT NULL,
     Is_borrowed   INT    NOT NULL,
@@ -23,14 +23,14 @@ CREATE TABLE ACCOUNT
     Name    VARCHAR(15)     NOT NULL,
     Email   VARCHAR(30)     NOT NULL,
     Phone   VARCHAR(15),
-    PRIMARY KEY (ID) 
+    PRIMARY KEY (ID)
 );
 
 CREATE TABLE RATING
 (
-	Rating_index INT NOT NULL,
+    Rating_index INT NOT NULL,
     Rating  INT     NOT NULL,
-    Comment VARCHAR(100),
+    Review VARCHAR(100),
     Book_ID char(13) NOT NULL,
     Account_ID VARCHAR(15) NOT NULL,
     PRIMARY KEY (Rating_index),
@@ -90,7 +90,7 @@ CREATE TABLE BORROW
     Borrow_date DATE    NOT NULL,
     Return_date DATE    NOT NULL,
     Account_ID VARCHAR(15) NOT NULL,
-    Book_ID CHAR(13) NOT NULL, 
+    Book_ID CHAR(13) NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES ACCOUNT(ID),
     FOREIGN KEY (Book_ID) REFERENCES BOOK (ISBN)
 );
