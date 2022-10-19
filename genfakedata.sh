@@ -37,7 +37,6 @@ for i in {1..32}; do
 done
 
 # Generate data for BORROW Entity
-# TODO: Action Constraint to make "state" of Books to True.
 for i in {1..32}; do
 	cnt=$(( RANDOM % 9 + 1 ))
 	isbns=$(awk -F "," '{ print $5 }' books.csv | shuf -n${cnt})
