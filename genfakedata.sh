@@ -14,7 +14,7 @@ for x in ${attribs}; do
 	summary="Summary for Testing"
 	cat <<-EOF >>insert.sql
 	INSERT INTO BOOK (Title, ISBN, Language, Page, Summary, Is_borrowed, Price, Library, Floor, Shelf_number)
-	VALUES (${x}, '${summary}', '${is_borrowed}', '${price}', '${library}', ${floor}, ${shelf_number});
+	VALUES (${x}, "${summary}", "${is_borrowed}", "${price}", "${library}", ${floor}, ${shelf_number});
 	EOF
 done
 unset IFS
@@ -26,7 +26,7 @@ for i in {1..32}; do
 	phone=$(shuf -e -n1 010 011)-$(printf "%4d" $((RANDOM % 9999)))-$(printf "%4d" $((RANDOM % 9999)))
 	cat <<-EOF >>insert.sql
 	INSERT INTO ACCOUNT (ID, Password, Name, Email, Phone)
-	VALUES ('User${i}', '${password}', 'Person${i}', 'user${i}@email.net', '${phone}');
+	VALUES ("User${i}", "${password}", "Person${i}", "user${i}@email.net", "${phone}");
 	EOF
 done
 
@@ -43,7 +43,7 @@ for i in {1..32}; do
 		return_date=$(( year + RANDOM % 5 ))-$(( month + RANDOM % 7 ))-$(( day + RANDOM % 8 ))
 		cat <<-EOF >>insert.sql
 		INSERT INTO BORROW (Account_ID, ISBN, Borrow_date, Return_date)
-		VALUES ('User${i}', '${x}', TO_DATE('${borrow_date}', 'yyyy-mm-dd'), TO_DATE('${return_date}', 'yyyy-mm-dd'));
+		VALUES ("User${i}", "${x}", TO_DATE("${borrow_date}", "yyyy-mm-dd"), TO_DATE("${return_date}", "yyyy-mm-dd"));
 		EOF
 	done
 done
@@ -58,7 +58,7 @@ for i in {1..32}; do
 		comment="Comment of User${i} to ${isbn} for Testing"
 		cat <<-EOF >>insert.sql
 		INSERT INTO RATING (Book_ID, Account_ID, Rating, Comment)
-		VALUES ('${isbn}', 'User${i}', ${rating}, '${comment}');
+		VALUES ("${isbn}", "User${i}", ${rating}, "${comment}");
 		EOF
 	done
 done
@@ -70,7 +70,7 @@ for i in {1..128}; do
 	death=$(( birth + RANDOM % 100 ))
 	cat <<-EOF >>insert.sql
 	INSERT INTO AUTHOR (Name, Birth_year, Death_year, ID, Nationality)
-	VALUES ('Author${i}', '${birth}', '${death}', 'ID${i}', $(shuf -e -n1 en ko fr cn de));
+	VALUES ("Author${i}", "${birth}", "${death}", "ID${i}", $(shuf -e -n1 en ko fr cn de));
 	EOF
 done
 
@@ -81,7 +81,7 @@ for isbn in ${isbns}; do
 	cnt=$(( RANDOM % 1 + 1 ))
 	for author_id in $(echo "${author_ids}" | shuf -n${cnt}); do
 		cat <<-EOF >>insert.sql
-		INSERT INTO AUTHORED (Author_ID, Book_ID) VALUES ('${author_id}', '${isbn}');
+		INSERT INTO AUTHORED (Author_ID, Book_ID) VALUES ("${author_id}", "${isbn}");
 		EOF
 	done
 done
@@ -91,7 +91,7 @@ done
 for i in {1..128}; do
 	cat <<-EOF >>insert.sql
 	INSERT INTO TRANSLATOR (Language, Name, ID)
-	VALUES ($(shuf -e -n1 en ko fr cn de), 'Translator${i}', 'ID${i}');
+	VALUES ($(shuf -e -n1 en ko fr cn de), "Translator${i}", "ID${i}");
 	EOF
 done
 
@@ -102,7 +102,7 @@ for isbn in ${isbns}; do
 	translator_id=$(echo "${translator_ids}" | shuf -n1)
 	cat <<-EOF >>insert.sql
 	INSERT INTO TRANSLATED (Translator_ID, Book_ID)
-	VALUES ('${translator_id}', '${isbn}');
+	VALUES ("${translator_id}", "${isbn}");
 	EOF
 done
 
@@ -112,7 +112,7 @@ for i in {1..128}; do
 	address=$(shuf -e -n1 Daegu Pohang Seoul Incheon)
 	cat <<-EOF >>insert.sql
 	INSERT INTO PUBLISHER (Name, Address, ID)
-	VALUES ('Publisher${i}', '${address}', 'ID${i}');
+	VALUES ("Publisher${i}", "${address}", "ID${i}");
 	EOF
 done
 
@@ -123,7 +123,7 @@ for isbn in ${isbns}; do
 	publisher_id=$(echo "${publisher_ids}" | shuf -n1)
 	cat <<-EOF >>insert.sql
 	INSERT INTO PUBLISHED_BY (Pub_ID, Book_ID)
-	VALUES ('${publisher_id}', '${isbn}');
+	VALUES ("${publisher_id}", "${isbn}");
 	EOF
 done
 
@@ -146,7 +146,7 @@ genres=(
 
 ID=0
 for genre in "${genres[@]}"; do
-	echo "INSERT INTO GENRE (Genre, ID) VALUES ('${genre}', ${ID});" >>insert.sql
+	echo "INSERT INTO GENRE (Genre, ID) VALUES ("${genre}", ${ID});" >>insert.sql
 	ID=$(( ID + 1 ))
 done
 
@@ -156,7 +156,7 @@ for isbn in ${isbns}; do
 	genre_ID=$(( RANDOM % $(echo "${genres[@]}" | wc -l)))
 	cat <<-EOF >>insert.sql
 	INSERT INTO BELONG (Genre_ID, Book_ID)
-	VALUES ('${genre_ID}', '${isbn}');
+	VALUES ("${genre_ID}", "${isbn}");
 	EOF
 done
 
@@ -167,7 +167,7 @@ for i in {1..5}; do
 	password=$(echo ${RANDOM} | md5sum | awk '{ print $1 }')
 	cat <<-EOF >>insert.sql
 	INSERT INTO PUBLISHER (ID, Password, Name, Email, Phone)
-	VALUES ('ID${i}', '${password}', 'Name${i}', 'admin${i}@email.net', '${phone}');
+	VALUES ("ID${i}", "${password}", "Name${i}", "admin${i}@email.net", "${phone}");
 	EOF
 done
 
@@ -178,7 +178,7 @@ for isbn in ${isbns}; do
 	admin_ID=$(echo "${admin_IDs}" | shuf -n1)
 	cat <<-EOF >>insert.sql
 	INSERT INTO MANAGES (Admin_ID, Book_ID)
-	VALUES ('${admin_ID}', '${isbn}');
+	VALUES ("${admin_ID}", "${isbn}");
 	EOF
 done
 
