@@ -47,8 +47,8 @@ CREATE TABLE ADMIN
 
 CREATE TABLE GENRE
 (
-    ID    VARCHAR(15)     NOT NULL,
-    Genres  VARCHAR(15),
+    ID     VARCHAR(15)     NOT NULL,
+    Genre  VARCHAR(15),
     PRIMARY KEY (ID)
 );
 
