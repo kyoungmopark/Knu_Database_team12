@@ -1,11 +1,11 @@
 CREATE TABLE BOOK 
 (
     ISBN    CHAR(13)    NOT NULL, 
-    Title   VARCHAR(15)     NOT NULL,
+    Title   VARCHAR(50)     NOT NULL,
     Summary VARCHAR(100)    NOT NULL, 
     Language VARCHAR(15)    NOT NULL,
     Price   INT     NOT NULL,
-    Is_borrowed   BOOLEAN    NOT NULL,
+    Is_borrowed   INT    NOT NULL,
     Page    INT     NOT NULL,
     Library VARCHAR(15) NOT NULL,
     Floor  INT     NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE GENRE
 CREATE TABLE PUBLISHER
 (
     ID  VARCHAR(15)     NOT NULL,
-    Name    VARCHAR(15)     NOT NULL,
+    Name    VARCHAR(50)     NOT NULL,
     Address     VARCHAR(30)     NOT NULL,
     PRIMARY KEY (ID)
 );
