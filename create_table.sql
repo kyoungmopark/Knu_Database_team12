@@ -25,12 +25,11 @@ CREATE TABLE ACCOUNT
 
 CREATE TABLE RATING
 (
-    Rating_index INT NOT NULL,
-    Rating  INT     NOT NULL,
-    Review VARCHAR(100),
-    Book_ID char(13) NOT NULL,
-    Account_ID VARCHAR(15) NOT NULL,
-    PRIMARY KEY (Rating_index),
+    Rating        INT               NOT NULL,
+    Review        VARCHAR(100),
+    Book_ID       char(13)          NOT NULL,
+    Account_ID    VARCHAR(15)       NOT NULL,
+    PRIMARY KEY (Book_ID, Account_ID),
     FOREIGN KEY (Book_ID) REFERENCES BOOK (ISBN) ON DELETE CASCADE,
     FOREIGN KEY (Account_ID) REFERENCES Account (ID) ON DELETE CASCADE
 );
