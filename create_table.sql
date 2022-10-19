@@ -30,7 +30,7 @@ CREATE TABLE RATING
 (
 	Rating_index INT NOT NULL,
     Rating  INT     NOT NULL,
-    Review VARCHAR(100),
+    Comment VARCHAR(100),
     Book_ID char(13) NOT NULL,
     Account_ID VARCHAR(15) NOT NULL,
     PRIMARY KEY (Rating_index),
