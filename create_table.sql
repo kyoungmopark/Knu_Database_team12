@@ -71,7 +71,7 @@ CREATE TABLE AUTHOR
 (
     ID   VARCHAR(15)     NOT NULL,
     Name    VARCHAR(15)     NOT NULL,
-    Brith_year  DATE    NOT NULL,
+    Birth_year  DATE    NOT NULL,
     Death_year  DATE,
     Nationality VARCHAR(15)     NOT NULL,
     PRIMARY KEY (ID)
