@@ -26,7 +26,7 @@ CREATE TABLE ACCOUNT
 CREATE TABLE RATING
 (
     Rating        INT               NOT NULL,
-    Review        VARCHAR(100),
+    Review        VARCHAR(1000),
     Book_ID       char(13)          NOT NULL,
     Account_ID    VARCHAR(15)       NOT NULL,
     PRIMARY KEY (Book_ID, Account_ID),
