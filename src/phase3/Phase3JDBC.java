@@ -2,6 +2,7 @@ package phase3;
 
 import java.io.*;
 import java.sql.*;
+import java.util.Scanner;
 
 public class Phase3JDBC {
 
@@ -32,72 +33,102 @@ public class Phase3JDBC {
         }
 
         // CLI loop
-        ResultSet rs = null;
-        try {
-            String sql = null;
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("1. Insert new Book.");
+            System.out.println("2. Update existing Book.");
+            System.out.println("3. Delete existing Book.");
 
-            // Q1: Complete your query.
-            sql =
-                "SELECT E.Sex, AVG(Salary) AS Avg FROM EMPLOYEE E, DEPENDENT D WHERE\n" +
-                "Ssn = Essn AND Relationship = 'Spouse'\n" +
-                "GROUP BY E.Sex ORDER BY Avg ASC";
-            rs = stmt.executeQuery(sql);
-            System.out.println("<< query 1 result >>");
-            System.out.println("Sex | Avg_salary");
-            while (rs.next()) {
-                String sex = rs.getString(1);
-                float salary = rs.getFloat(2);
-                System.out.println(String.format("%s | %.3f", sex, salary));
+            System.out.println("4. Insert new Review.");
+            System.out.println("5. Update existing Review.");
+            System.out.println("6. Delete existing Review.");
+
+            System.out.println("7. Insert new Account.");
+            System.out.println("8. Update existing Account.");
+            System.out.println("9. Delete existing Account.");
+
+            System.out.println("10. Insert new Admin.");
+            System.out.println("11. Update existing Admin.");
+            System.out.println("12. Delete existing Admin.");
+
+            System.out.println("13. Insert new Genre.");
+            System.out.println("14. Update existing Genre.");
+            System.out.println("15. Delete existing Genre.");
+
+            System.out.println("16. Insert new Publisher.");
+            System.out.println("17. Update existing Publisher.");
+            System.out.println("18. Delete existing Publisher.");
+
+            System.out.println("19. Insert new Translator.");
+            System.out.println("20. Update existing Translator.");
+            System.out.println("21. Delete existing Translator.");
+
+            System.out.println("22. Insert new Author.");
+            System.out.println("23. Update existing Author.");
+            System.out.println("24. Delete existing Author.");
+
+            System.out.println("25. Exit.");
+
+            System.out.println("Select what to do: ");
+            int operation = scanner.nextLine();
+
+            switch (operation) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    break;
+                case 11:
+                    break;
+                case 12:
+                    break;
+                case 13:
+                    break;
+                case 14:
+                    break;
+                case 15:
+                    break;
+                case 16:
+                    break;
+                case 17:
+                    break;
+                case 18:
+                    break;
+                case 19:
+                    break;
+                case 20:
+                    break;
+                case 20:
+                    break;
+                case 21:
+                    break;
+                case 22:
+                    break;
+                case 23:
+                    break;
+                case 24:
+                    break;
+                case 25:
+                    break;
+                default:
+                    System.out.println("Invalid operation selected! Select again.");
+                    break;
             }
-            rs.close();
-
-            System.out.println();
-
-            // Q2: Complete your query.
-            sql =
-                "SELECT Ssn, Lname, Fname, Salary FROM EMPLOYEE E WHERE\n" +
-                "NOT EXISTS (\n" +
-                "   (SELECT Pnumber FROM PROJECT WHERE Dnum = 4)\n" +
-                "   MINUS\n" +
-                "   (SELECT Pnumber FROM PROJECT, WORKS_ON WHERE Pnumber = Pno AND Essn = E.Ssn)\n" +
-                ") ORDER BY Salary DESC";
-            rs = stmt.executeQuery(sql);
-            System.out.println("<< query 2 result >>");
-            System.out.println("Ssn | Lname | Fname | Salary");
-            while (rs.next()) {
-                String ssn = rs.getString(1);
-                String lName = rs.getString(2);
-                String fName = rs.getString(3);
-                float salary = rs.getFloat(4);
-                System.out.println(String.format("%s | %s | %s | %f", ssn, lName, fName, salary));
-            }
-            rs.close();
-
-            System.out.println();
-
-            // Q3: Complete your query.
-            sql =
-                "SELECT Dname, Pname, Lname, Fname FROM EMPLOYEE\n" +
-                "FULL OUTER JOIN WORKS_ON ON Ssn = Essn\n" +
-                "FULL OUTER JOIN PROJECT ON Pnumber = Pno\n" +
-                "FULL OUTER JOIN DEPARTMENT ON Dnumber = Dnum\n" +
-                "WHERE Plocation = 'Stafford'\n" +
-                "ORDER BY Dnum ASC, Pname ASC";
-            rs = stmt.executeQuery(sql);
-            System.out.println("<< query 3 result >>");
-            System.out.println("Dname | Pname | Lname | Fname");
-            while (rs.next()) {
-                String dName = rs.getString(1);
-                String pName = rs.getString(2);
-                String lName = rs.getString(3);
-                String fName = rs.getString(4);
-                System.out.println(String.format("%s | %s | %s | %s", dName, pName, lName, fName));
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            System.err.println("Something went wrong processing task2: " + e.getLocalizedMessage());
-            System.exit(1);
         }
 
         try {
