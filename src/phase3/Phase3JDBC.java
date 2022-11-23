@@ -84,7 +84,6 @@ cliLoop: while (true) {
                     System.out.printf("Page 입력: ");
                     int Page = Integer.parseInt(scanner.nextLine().trim());
 
-
                     System.out.printf("Floor 입력: ");
                     int Floor = Integer.parseInt(scanner.nextLine().trim());
 
@@ -178,8 +177,9 @@ cliLoop: while (true) {
                 break;
             case 3:
                 try {
-                    System.out.println("삭제할 ISBN을 입력: ");
+                    System.out.printf("삭제할 ISBN을 입력: ");
                     String ISBN = scanner.nextLine().trim();
+
                     sql = "DELETE FROM BOOK WHERE ISBN = ?";
                     pstmt = conn.prepareStatement(sql);
                     pstmt.setString(1, ISBN);
@@ -231,25 +231,25 @@ cliLoop: while (true) {
                 break;
             case 5:
                 try {
+                    System.out.printf("ISBN 입력: ");
+                    String Book_id = scanner.nextLine().trim();
+
+                    System.out.printf("Account ID 입력: ");
+                    String Account_id = scanner.nextLine().trim();
+
                     System.out.printf("Rating 입력: ");
                     int Rating = Integer.parseInt(scanner.nextLine().trim());
 
                     System.out.printf("Review 입력: ");
                     String Review = scanner.nextLine().trim();
 
-                    System.out.printf("Account ID 입력: ");
-                    String Account_id = scanner.nextLine().trim();
-
-                    System.out.printf("ISBN 입력: ");
-                    String Book_id = scanner.nextLine().trim();
-
                     sql = "UPDATE RATING\n" +
-                        "SET Rating = ?, Review = ? WHERE Account_id = ? AND Book_id = ?";
+                        "SET Rating = ?, Review = ? WHERE Book_id = ? AND Account_id = ?";
                     pstmt = conn.prepareStatement(sql);
-                    pstmt.setInt(1,Rating);
-                    pstmt.setString(2,Review);
-                    pstmt.setString(3,Account_id);
-                    pstmt.setString(4, Book_id);
+                    pstmt.setInt(1, Rating);
+                    pstmt.setString(2, Review);
+                    pstmt.setString(3, Book_id);
+                    pstmt.setString(4, Account_id);
 
                     int result = pstmt.executeUpdate();
                     if (result == 0)
@@ -265,14 +265,16 @@ cliLoop: while (true) {
                 break;
             case 6:
                 try {
-                    System.out.println("삭제할 Rating을 작성한 Account ID 입력 : ");
-                    String Account_id = scanner.nextLine().trim();
-                    System.out.println("삭제할 Rating에 해당하는 Book ID 입력 : ");
+                    System.out.printf("삭제할 Rating에 해당하는 Book ID 입력: ");
                     String Book_id = scanner.nextLine().trim();
-                    sql = "DELETE FROM RATING WHERE ACCOUNT_ID = ? AND BOOK_ID = ?";
-                    pstmt=conn.prepareStatement(sql);
-                    pstmt.setString(1, Account_id);
-                    pstmt.setString(2, Book_id);
+
+                    System.out.printf("삭제할 Rating을 작성한 Account ID 입력: ");
+                    String Account_id = scanner.nextLine().trim();
+
+                    sql = "DELETE FROM RATING WHERE Book_id = ? AND Account_id = ?";
+                    pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, Book_id);
+                    pstmt.setString(2, Account_id);
 
                     int result = pstmt.executeUpdate();
                     if (result == 1)
@@ -341,13 +343,13 @@ cliLoop: while (true) {
                     String Phone = scanner.nextLine().trim();
 
                     sql = "UPDATE ACCOUNT\n" +
-                        "SET Password = ?, Name = ?, Email = ?, Phone = ? WHERE ID = ?";
+                        "SET Name = ?, Email = ?, Phone = ? WHERE ID = ? AND Password = ?";
                     pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1,ID);
-                    pstmt.setString(2,Password);
-                    pstmt.setString(3,Name);
-                    pstmt.setString(4,Email);
-                    pstmt.setString(5,Phone);
+                    pstmt.setString(1, Name);
+                    pstmt.setString(2, Email);
+                    pstmt.setString(3, Phone);
+                    pstmt.setString(4, ID);
+                    pstmt.setString(5, Password);
 
                     int result = pstmt.executeUpdate();
                     if(result == 0)
@@ -365,10 +367,11 @@ cliLoop: while (true) {
                 try {
                     System.out.println("삭제할 Account의 ID을 입력 : ");
                     String ID = scanner.nextLine().trim();
+
                     System.out.println("삭제할 Account의 Password을 입력 : ");
                     String Password = scanner.nextLine().trim();
 
-                    sql = "DELETE FROM ACCOUNT WHERE ID=? AND PASSWORD =?";
+                    sql = "DELETE FROM ACCOUNT WHERE ID=? AND PASSWORD=?";
                     pstmt=conn.prepareStatement(sql);
                     pstmt.setString(1, ID);
                     pstmt.setString(2, Password);
@@ -418,10 +421,10 @@ cliLoop: while (true) {
     }
 
 	public static void query1(Connection conn, Statement stmt) {
-		Scanner sc = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 
 		System.out.print("작가 이름을 입력:");
-		String buffer = sc.nextLine();
+		String buffer = scanner.nextLine().trim();
 
 		ResultSet rs = null;
 		try {
@@ -688,11 +691,11 @@ cliLoop: while (true) {
 	}
 
 	public static void query8(Connection conn, Statement stmt) {
-		Scanner sc = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
 
 		System.out.println("특정 언어로 자필된 책의 장르별 책 수 보여주기");
 		System.out.print("언어 입력:");
-		String buffer = sc.nextLine();
+		String buffer = scanner.nextLine().trim();
 
 		ResultSet rs = null;
 		try {
