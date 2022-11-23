@@ -67,7 +67,9 @@ public class Phase3JDBC {
             System.out.println("23. Update existing Author.");
             System.out.println("24. Delete existing Author.");
 
-            System.out.println("25. Exit.");
+            System.out.println("25. Query data.");
+
+            System.out.println("26. Exit.");
 
             System.out.println("Select what to do: ");
             int operation = scanner.nextLine();
@@ -124,6 +126,8 @@ public class Phase3JDBC {
                 case 24:
                     break;
                 case 25:
+                    break;
+                case 26:
                     break;
                 default:
                     System.out.println("Invalid operation selected! Select again.");
