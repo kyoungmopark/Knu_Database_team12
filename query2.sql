@@ -98,7 +98,7 @@ order by 리뷰_수 DESC
 ;
 
 -- query10
--- 입력한 도서관 2개에 있는 책의 목록
+-- 입력한 도서관에 있는 책의 목록
 -- 입력: 첫째 도서관 이름/ 첫째 도서관 층/ 첫째 도서관 서가번호 /둘째 도서관 이름 /둘째 도서관 층 /둘째 도서관 서가번호
 -- ex) 1,1,1 and 2,2,2
 select b.title 제목, b.language 언어, b.library 도서관, b.floor 층, b.shelf_number 서가번호 from book b 
