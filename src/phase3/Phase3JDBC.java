@@ -6,8 +6,7 @@ import java.util.Scanner;
 
 public class Phase3JDBC {
 
-    // public static final String URL = "jdbc:oracle:thin:@localhost:1521:orcl";
-    public static final String URL = "jdbc:oracle:thin:@localhost:1521/orclpdb1";
+    public static final String URL = "jdbc:oracle:thin:@localhost:1521:orcl";
     public static final String USER_UNIVERSITY = "university";
     public static final String USER_PASSWORD = "comp322";
 
@@ -90,21 +89,11 @@ cliLoop: while (true) {
                     System.out.printf("Shelf number 입력: ");
                     int Shelf_number = Integer.parseInt(scanner.nextLine().trim());
 
-                    sql = "INSERT INTO BOOK VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1, ISBN);
-                    pstmt.setString(2, Title);
-                    pstmt.setString(3, Summary);
-                    pstmt.setString(4, Language);
-                    pstmt.setInt(5, Price);
-                    pstmt.setInt(6, Is_borrowed);
-                    pstmt.setInt(7, Page);
-                    pstmt.setString(8, Library);
-                    pstmt.setInt(9, Floor);
-                    pstmt.setInt(10, Shelf_number);
-
-                    int result = pstmt.executeUpdate();
-                    if(result == 1)
+                    int result = stmt.executeUpdate(
+                        String.format(
+                            "INSERT INTO BOOK VALUES('%s', '%s', '%s', '%s', %s, %s, %s, '%s', %s, %s)",
+                            ISBN, Title, Summary, Language, Price, Is_borrowed, Page, Library, Floor, Shelf_number));
+                    if (result == 1)
                         System.out.println("insert 성공!");
                     else
                         System.out.println("insert 실패!");
@@ -147,23 +136,13 @@ cliLoop: while (true) {
                     System.out.printf("Shelf number 입력: ");
                     int Shelf_number = Integer.parseInt(scanner.nextLine().trim());
 
-                    sql = "UPDATE BOOK\n" +
-                        "SET Title = ?, Summary = ?, Language = ?, Library = ?, Price = ?,\n" +
-                        "Is_borrowed = ?, Page = ?, Floor = ?, Shelf_number = ?\n" +
-                        "WHERE ISBN = ?";
-                    pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1, Title);
-                    pstmt.setString(2, Summary);
-                    pstmt.setString(3, Language);
-                    pstmt.setString(4, Library);
-                    pstmt.setInt(5, Price);
-                    pstmt.setInt(6, Is_borrowed);
-                    pstmt.setInt(7, Page);
-                    pstmt.setInt(8, Floor);
-                    pstmt.setInt(9, Shelf_number);
-                    pstmt.setString(10, ISBN);
-
-                    int result = pstmt.executeUpdate();
+                    int result = stmt.executeUpdate(
+                        String.format(
+                            "UPDATE BOOK\n" +
+                                "SET Title = '%s', Summary = '%s', Language = '%s', Library = '%s', Price = %s\n" +
+                                ", Is_borrowed = %s, Page = %s, Floor = %s, Shelf_number = %s\n" +
+                                "WHERE ISBN = '%s'",
+                            Title, Summary, Language, Library, Price, Is_borrowed, Page, Floor, Shelf_number, ISBN));
                     if (result == 0)
                         System.out.println("update 실패!");
                     else
@@ -180,11 +159,8 @@ cliLoop: while (true) {
                     System.out.printf("삭제할 ISBN을 입력: ");
                     String ISBN = scanner.nextLine().trim();
 
-                    sql = "DELETE FROM BOOK WHERE ISBN = ?";
-                    pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1, ISBN);
-
-                    int result = pstmt.executeUpdate();
+                    int result = stmt.executeUpdate(
+                        String.format("DELETE FROM BOOK WHERE ISBN = '%s'", ISBN));
                     if (result == 1)
                         System.out.println("delete 성공!");
                     else
@@ -210,14 +186,10 @@ cliLoop: while (true) {
                     System.out.printf("ISBN 입력: ");
                     String Book_id = scanner.nextLine().trim();
 
-                    sql = "INSERT INTO RATING VALUES(?, ?, ?, ?)";
-                    pstmt = conn.prepareStatement(sql);
-                    pstmt.setInt(1, Rating);
-                    pstmt.setString(2, Review);
-                    pstmt.setString(3, Book_id);
-                    pstmt.setString(4, Account_id);
-
-                    int result = pstmt.executeUpdate();
+                    int result = stmt.executeUpdate(
+                        String.format(
+                            "INSERT INTO RATING VALUES(%s, '%s', '%s', '%s')",
+                            Rating, Review, Book_id, Account_id));
                     if (result ==1)
                         System.out.println("insert 성공!");
                     else
@@ -243,15 +215,11 @@ cliLoop: while (true) {
                     System.out.printf("Review 입력: ");
                     String Review = scanner.nextLine().trim();
 
-                    sql = "UPDATE RATING\n" +
-                        "SET Rating = ?, Review = ? WHERE Book_id = ? AND Account_id = ?";
-                    pstmt = conn.prepareStatement(sql);
-                    pstmt.setInt(1, Rating);
-                    pstmt.setString(2, Review);
-                    pstmt.setString(3, Book_id);
-                    pstmt.setString(4, Account_id);
-
-                    int result = pstmt.executeUpdate();
+                    int result = stmt.executeUpdate(
+                        String.format(
+                            "UPDATE RATING\n" +
+                                "SET Rating = %s, Review = '%s' WHERE Book_id = '%s' AND Account_id = '%s'",
+                            Rating, Review, Book_id, Account_id));
                     if (result == 0)
                         System.out.println("update 실패!");
                     else
@@ -271,12 +239,10 @@ cliLoop: while (true) {
                     System.out.printf("삭제할 Rating을 작성한 Account ID 입력: ");
                     String Account_id = scanner.nextLine().trim();
 
-                    sql = "DELETE FROM RATING WHERE Book_id = ? AND Account_id = ?";
-                    pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1, Book_id);
-                    pstmt.setString(2, Account_id);
-
-                    int result = pstmt.executeUpdate();
+                    int result = stmt.executeUpdate(
+                        String.format(
+                            "DELETE FROM RATING WHERE Book_id = '%s' AND Account_id = '%s'",
+                            Book_id, Account_id));
                     if (result == 1)
                         System.out.println("delete 성공!");
                     else
@@ -305,15 +271,9 @@ cliLoop: while (true) {
                     System.out.printf("Phone number 입력: ");
                     String Phone = scanner.nextLine().trim();
 
-                    sql = "INSERT INTO ACCOUNT VALUES(?, ?, ?, ?, ?)";
-                    pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1, ID);
-                    pstmt.setString(2, Password);
-                    pstmt.setString(3, Name);
-                    pstmt.setString(4, Email);
-                    pstmt.setString(5, Phone);
-
-                    int result = pstmt.executeUpdate();
+                    int result = stmt.executeUpdate(
+                        String.format("INSERT INTO ACCOUNT VALUES('%s', '%s', '%s', '%s', '%s')",
+                                ID, Password, Name, Email, Phone));
                     if(result == 1)
                         System.out.println("insert 성공!");
                     else
@@ -342,16 +302,10 @@ cliLoop: while (true) {
                     System.out.printf("Phone number 입력: ");
                     String Phone = scanner.nextLine().trim();
 
-                    sql = "UPDATE ACCOUNT\n" +
-                        "SET Name = ?, Email = ?, Phone = ? WHERE ID = ? AND Password = ?";
-                    pstmt = conn.prepareStatement(sql);
-                    pstmt.setString(1, Name);
-                    pstmt.setString(2, Email);
-                    pstmt.setString(3, Phone);
-                    pstmt.setString(4, ID);
-                    pstmt.setString(5, Password);
-
-                    int result = pstmt.executeUpdate();
+                    int result = stmt.executeUpdate(
+                        String.format("UPDATE ACCOUNT\n" +
+                            "SET Name = '%s', Email = '%s', Phone = '%s' WHERE ID = '%s' AND Password = '%s'",
+                            Name, Email, Phone, ID, Password));
                     if(result == 0)
                         System.out.println("update 실패!");
                     else
@@ -365,18 +319,15 @@ cliLoop: while (true) {
                 break;
             case 9:
                 try {
-                    System.out.println("삭제할 Account의 ID을 입력 : ");
+                    System.out.println("삭제할 Account의 ID을 입력: ");
                     String ID = scanner.nextLine().trim();
 
-                    System.out.println("삭제할 Account의 Password을 입력 : ");
+                    System.out.println("삭제할 Account의 Password을 입력: ");
                     String Password = scanner.nextLine().trim();
 
-                    sql = "DELETE FROM ACCOUNT WHERE ID=? AND PASSWORD=?";
-                    pstmt=conn.prepareStatement(sql);
-                    pstmt.setString(1, ID);
-                    pstmt.setString(2, Password);
-
-                    int result = pstmt.executeUpdate();
+                    int result = stmt.executeUpdate(
+                        String.format("DELETE FROM ACCOUNT WHERE ID = %s AND Password = %s",
+                            ID, Password));
                     if (result == 1)
                         System.out.println("delete 성공!");
                     else
