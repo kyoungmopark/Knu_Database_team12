@@ -149,7 +149,7 @@ router.get('/comment',(req,res,next) => {
       if(isbn && title && rating && comment) {
         str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
           + "VALUES("+rating+", '"+comment+"', '"+isbn+"', '"+userID+"') ;";
-        const qr1 = await connection.execute(str);
+        connection.execute(str);
         connection.commit;
       }
       str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
