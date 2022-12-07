@@ -52,9 +52,12 @@ router.get('/book',(req,res, next) => {
       const qr = await connection.execute(str)
       const count = qr.rows.length;
 
-      console.log(qr.rows.length);
-      console.log(qr.rows[0]);
+      // console.log(qr.rows[0]);
       let result = '<table>';
+      // add metaData
+      for(let k =0; k < qr.metaData.length;k++){
+        result = result + "<th>" +qr.metaData[k].name + "</th>";
+      }
       for( let i = 0; i < count; i ++) {
         result = result + '<tr>';
         result = result + '<td><a href="https://isbnsearch.org/isbn/' + qr.rows[i][0] + '">'+qr.rows[i][0] + '</a></td>';
@@ -103,6 +106,10 @@ router.get('/reviewAll',(req,res,next) => {
       const qr = await connection.execute(str);
       const count = qr.rows.length;
       let result = '<table>';
+      // add metaData
+      for(let k =0; k < qr.metaData.length;k++){
+        result = result + "<th>" +qr.metaData[k].name + "</th>";
+      }
       for( let i = 0; i < count; i ++) {
         result = result + '<tr>';
         result = result + '<td><a href="https://isbnsearch.org/isbn/' + qr.rows[i][0] + '">'+qr.rows[i][0] + '</a></td>';
@@ -168,6 +175,10 @@ router.get('/reviewUser',(req,res,next) => {
       const qr = await connection.execute(str);
       const count = qr.rows.length;
       let result = '<table id="myReviewTable">';
+      // add metaData
+      for(let k =0; k < qr.metaData.length;k++){
+        result = result + "<th>" +qr.metaData[k].name + "</th>";
+      }
       for( let i = 0; i < count; i ++) {
         result = result + '<tr>';
         result = result + '<td><a href="https://isbnsearch.org/isbn/' + qr.rows[i][0] + '">'+qr.rows[i][0] + '</a></td>';
@@ -271,6 +282,10 @@ router.get('/ratingRank',(req,res,next) => {
       console.log("touch rating rank:");
       console.log(qr.rows[0][0])
       let result = '<table>';
+      // add metaData
+      for(let k =0; k < qr.metaData.length;k++){
+        result = result + "<th>" +qr.metaData[k].name + "</th>";
+      }
       for( let i = 0; i < 10; i ++) {
         result = result + '<tr>';
         result = result + '<td>' + qr.rows[i][0] +'</td>';
