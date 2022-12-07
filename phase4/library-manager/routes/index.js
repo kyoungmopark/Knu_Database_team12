@@ -131,9 +131,8 @@ router.get('/comment',(req,res,next) => {
   console.log("touch comment1: ",req.query.bookTitle);
 
   // connect Oracle Database
-  async function fun1(){
-    let str;
-    const userID = req.query.userID;
+  async function fun(){
+    const userID = "User15";
     const isbn = req.query.bookISBN;
     const title = req.query.bookTitle;
     const rating = req.query.bookRating;
@@ -149,10 +148,17 @@ router.get('/comment',(req,res,next) => {
       if(isbn && title && rating && comment) {
         console.log("touch comment1: ",req.query.bookTitle);
         str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
-          + "VALUES("+rating+", '"+comment+"', '"+isbn+"', '"+userID+"') ;";
-        const qr1 = connection.execute(str);
+              + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+userID+"') ";
+        await connection.execute(str);
+        console.log("touch comment1: ",req.query.bookTitle);
+        
+        // connection.execute(str, function(err, result){
+        //   if(err) throw err;
+        //   console.log("1 record inserted");
+        // });
 
-        connection.commit;
+        connection.commit();
+        console.log("add 1/user:",userID);
       }
       str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
             + "from rating, book, account "
@@ -187,27 +193,8 @@ router.get('/comment',(req,res,next) => {
     }
   }
 
-  fun1();
-  // fun2();
-  
+  fun();  
 })
-
-// const startComment = document.getElementById("startComment");
-// const writeCommentForm = startComment.querySelector("writeComment");
-// const inputComment = document.getElementById("inputComment");
-// inputComment.hidden = true;
-// async function initComment(){
-//   startComment.hidden = true;
-//   inputComment.hidden = false;
-
-// }
-// async function handleWriteComment(event){
-//   initComment();
-
-// }
-// writeCommentForm.addEventListener("button", handleWriteComment);
-
-
 
 module.exports = router;
 // fun();
