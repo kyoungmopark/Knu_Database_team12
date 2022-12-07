@@ -173,6 +173,8 @@ router.get('/reviewUser',(req,res,next) => {
         result = result + '<td>' + qr.rows[i][2] +'</td>';
         result = result + '<td>' + qr.rows[i][3] +'</td>';
         result = result + '<td>' + qr.rows[i][4] +'</td>';
+        result = result + '<td><button>modify</button></td>';
+        result = result + '<td><button>delete</button></td>';
         result = result + '</tr>';
       }
       result = result + '</table>';
