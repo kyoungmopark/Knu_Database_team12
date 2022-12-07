@@ -147,9 +147,11 @@ router.get('/comment',(req,res,next) => {
       });
       console.log("Succesfully connected to Oracle!!");
       if(isbn && title && rating && comment) {
+        console.log("touch comment1: ",req.query.bookTitle);
         str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
           + "VALUES("+rating+", '"+comment+"', '"+isbn+"', '"+userID+"') ;";
-        connection.execute(str);
+        const qr1 = connection.execute(str);
+
         connection.commit;
       }
       str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
@@ -190,45 +192,6 @@ router.get('/comment',(req,res,next) => {
   
 })
 
-router.post('./comment',(req,res,next) => {
-  let str;
-  console.log("touch comment2: ");
-  
-  const userID = req.query.userID;
-  const isbn = req.query.bookISBN;
-  const title = req.query.bookTitle;
-  const rating = req.query.bookRating;
-  const comment = req.query.bookComment;
-  
-  async function fun2(){
-    try{
-      connection = await oracledb.getConnection({
-        user  : userDB,
-        password  : passwordDB,
-        connectionString  : 'localhost/orcl'
-      });
-      console.log("Succesfully connected to Oracle!!");
-      str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
-        + "VALUES("+rating+", '"+comment+"', '"+isbn+"', '"+userID+"') ;";
-      const qr = await connection.execute(str);
-
-      connection.commit;
-      res.render( 'comment' );
-
-    } catch(err){
-      console.log("Oracle connection Error: ", err);
-    } finally{
-      if(connection){
-        try{
-          await connection.close();
-        } catch(err){
-          console.log(err);
-        }
-      }
-    }
-  }
-  fun2();
-})
 // const startComment = document.getElementById("startComment");
 // const writeCommentForm = startComment.querySelector("writeComment");
 // const inputComment = document.getElementById("inputComment");
