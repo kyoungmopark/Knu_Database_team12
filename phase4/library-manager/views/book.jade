@@ -1,7 +1,22 @@
+//- 책의 이름/작가/ISBN 으로 책을 검색
+//- 검색된 책 리스트를 보여준다
+
 extends layout
 
 block content
-    h1 검색 결과
+    h1 검색
+    form(action="./book", method="get") 
+        table
+            tr 
+                td 
+                    select(name="searchOption")
+                        option(value="bookTitle" selected) Book title
+                        option(value="authorName") Author Name
+                        option(value="ISBN") ISBN
+                td  
+                    input(type="text", name="searchWord", value="")
+                td
+                    input(type="submit", value="Search")
     hr
     - const html = result 
     h3 total search: #{count}

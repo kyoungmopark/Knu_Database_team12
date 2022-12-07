@@ -2,19 +2,18 @@ var express = require('express');
 var router = express.Router();
 const oracledb = require('oracledb');
 let connection;
-var userDB = "pbook";
-var passwordDB = "pbook322";
-
+const userDB = "pbook";
+const passwordDB = "pbook322";
+const userID = "User21";
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   // res.render('view folder/jade file name');
-  res.render('index');
+  res.render('index'); 
 });
-
+/* book search */
 router.get('/book',(req,res, next) => {
-  console.log("touch search word: ", req.query.searchOption);
-  let word = req.query.searchOption;
+  let searchOption = req.query.searchOption;
   let searchWord = req.query.searchWord;
   let str;
 
@@ -27,20 +26,28 @@ router.get('/book',(req,res, next) => {
       });
       console.log("Succesfully connected to Oracle!!");
 
-      if(word === "bookTitle"){
-        console.log("search option:", word);
+      if(searchOption === "bookTitle"){
+        console.log("search option:", searchOption);
         str = "select book.isbn, book.title, author.name, book.is_borrowed, book.library, book.floor, book.shelf_number "
         + "from book, authored, author "
         + "where book.isbn = authored.book_id and authored.author_id = author.id "
         + "and book.title like '%" + searchWord + "%' ";
-  
-      }else if(word === "authorName"){
-        console.log("an");
-      }else if(word === "ISBN"){
-        console.log("isbn");
-      }else{
-        console.log("search word error!!");
+
+      }else if(searchOption === "authorName"){
+        console.log("search option:", searchOption);
+        str = "select book.isbn, book.title, author.name, book.is_borrowed, book.library, book.floor, book.shelf_number "
+        + "from book, authored, author "
+        + "where book.isbn = authored.book_id and authored.author_id = author.id "
+        + "and author.name like '%" + searchWord + "%' ";
+
+      }else if(searchOption === "ISBN"){
+        console.log("search option:", searchOption);
+        str = "select book.isbn, book.title, author.name, book.is_borrowed, book.library, book.floor, book.shelf_number "
+        + "from book, authored, author "
+        + "where book.isbn = authored.book_id and authored.author_id = author.id "
+        + "and book.isbn like '%" + searchWord + "%' ";
       }
+      
       const qr = await connection.execute(str)
       const count = qr.rows.length;
 
@@ -75,6 +82,170 @@ router.get('/book',(req,res, next) => {
 
   fun();
 });
+/* show all reviews */
+router.get('/reviewAll',(req,res,next) => {
+  let str;
+  // connect Oracle Database
+  async function fun(){
+    try{
+      connection = await oracledb.getConnection({
+        user  : userDB,
+        password  : passwordDB,
+        connectionString  : 'localhost/orcl'
+      });
+      console.log("Succesfully connected to Oracle!!");
+      str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
+            + "from rating, book, account "
+            + "where rating.book_id = book.isbn "
+            + "and account.id = rating.account_id";
+      const qr = await connection.execute(str);
+      const count = qr.rows.length;
+      let result = '<table>';
+      for( let i = 0; i < count; i ++) {
+        result = result + '<tr>';
+        result = result + '<td><a href="https://isbnsearch.org/isbn/' + qr.rows[i][0] + '">'+qr.rows[i][0] + '</a></td>';
+        result = result + '<td>' + qr.rows[i][1] +'</td>';
+        result = result + '<td>' + qr.rows[i][2] +'</td>';
+        result = result + '<td>' + qr.rows[i][3] +'</td>';
+        result = result + '<td>' + qr.rows[i][4] +'</td>';
+        result = result + '</tr>';
+      }
+      result = result + '</table>';
+
+      res.render( 'reviewAll', { result: result, count: count } );
+
+    } catch(err){
+      console.log("Oracle connection Error: ", err);
+    } finally{
+      if(connection){
+        try{
+          await connection.close();
+        } catch(err){
+          console.log(err);
+        }
+      }
+    }
+  }
+
+  fun();  
+})
+/* show only my reviews */
+router.get('/reviewUser',(req,res,next) => {
+  let str;
+  // connect Oracle Database
+  async function fun(){
+    var isbn = req.query.bookISBN;
+    var title = req.query.bookTitle;
+    var rating = req.query.bookRating;
+    var comment = req.query.bookComment;
+
+    try{
+      connection = await oracledb.getConnection({
+        user  : userDB,
+        password  : passwordDB,
+        connectionString  : 'localhost/orcl'
+      });
+      console.log("Succesfully connected to Oracle!!");
+      if(isbn && title && rating && comment){
+        str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
+             + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+userID+"') ";
+        await connection.execute(str);
+        connection.commit();
+        console.log("add 1 comment:",userID);
+      }
+      isbn = "";
+      title = "";
+      rating = "";
+      comment = "";
+
+      str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
+            + "from rating, book, account "
+            + "where rating.book_id = book.isbn "
+            + "and account.id = rating.account_id "
+            + "and account.id = '"+userID+"'";
+      const qr = await connection.execute(str);
+      const count = qr.rows.length;
+      let result = '<table>';
+      for( let i = 0; i < count; i ++) {
+        result = result + '<tr>';
+        result = result + '<td><a href="https://isbnsearch.org/isbn/' + qr.rows[i][0] + '">'+qr.rows[i][0] + '</a></td>';
+        result = result + '<td>' + qr.rows[i][1] +'</td>';
+        result = result + '<td>' + qr.rows[i][2] +'</td>';
+        result = result + '<td>' + qr.rows[i][3] +'</td>';
+        result = result + '<td>' + qr.rows[i][4] +'</td>';
+        result = result + '</tr>';
+      }
+      result = result + '</table>';
+
+      res.render( 'reviewUser', { result: result, count: count } );
+
+    } catch(err){
+      console.log("Oracle connection Error: ", err);
+    } finally{
+      if(connection){
+        try{
+          await connection.close();
+        } catch(err){
+          console.log(err);
+        }
+      }
+    }
+  }
+
+  fun();  
+})
+/* write review 
+router.get('/reviewWrite',(req,res,next) => {
+  let str;
+  // connect Oracle Database
+  async function fun(){    
+    var isbn = req.query.bookISBN;
+    var title = req.query.bookTitle;
+    var rating = req.query.bookRating;
+    var comment = req.query.bookComment;
+
+    try{
+      connection = await oracledb.getConnection({
+        user  : userDB,
+        password  : passwordDB,
+        connectionString  : 'localhost/orcl'
+      });
+      console.log("Succesfully connected to Oracle!!");
+      console.log(isbn,title,rating,comment)
+      if(isbn && title && rating && comment){
+        str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
+             + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+userID+"') ";
+        await connection.execute(str);
+        connection.commit();
+        console.log("add 1 comment:",userID);
+      }
+
+      res.render( 'reviewWrite' );
+
+    } catch(err){
+      console.log("Oracle connection Error: ", err);
+    } finally{
+      if(connection){
+        try{
+          await connection.close();
+        } catch(err){
+          console.log(err);
+        }
+      }
+    }
+  }
+
+  fun();  
+})
+*/
+router.get('/reviewWrite',(req, res, next) => {
+  res.render('reviewWrite')
+})
+
+// router.get('/', function(req, res, next) {
+//   // res.render('view folder/jade file name');
+//   res.render('index');
+// });
 
 router.get('/ratingRank',(req,res,next) => {
   console.log("touch rank: ");
@@ -129,7 +300,7 @@ router.get('/comment',(req,res,next) => {
   let str;
   // connect Oracle Database
   async function fun(){
-    const userID = "User13";
+    
     var isbn = req.query.bookISBN;
     var title = req.query.bookTitle;
     var rating = req.query.bookRating;
@@ -199,6 +370,7 @@ router.get('/comment',(req,res,next) => {
 
   fun();  
 })
+
 
 
 module.exports = router;

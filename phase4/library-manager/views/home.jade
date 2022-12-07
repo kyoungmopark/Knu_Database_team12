@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h1 도서관 프로그램
+  hr
+  div#showBookRank
+    h3 리뷰 랭킹
+    form(action="./ratingRank")
+      p 
+        input(type="submit", value="Show")        
+
+  div#bookSearch
+    h3 책 검색
+    form(action="./book", method="get") 
+      select(name="searchOption")
+        option(value="bookTitle" selected) Book title
+        option(value="authorName") Author Name
+        option(value="ISBN") ISBN
+      input(type="text", name="searchWord")
+      input(type="submit", value="Search")
+  
+  div#bookComment
+    h3 후기
+    form(action="./comment", method="get")
+      p 
+        input(type="submit", value="이동") 
+
+
+
+

@@ -7,7 +7,7 @@ block content
             input#writeComment(type="button", value="쓰기")
     div#inputComment
         form 
-            - const userName = Person9;
+            - const userName = Person21;
             table 
                 tr 
                     td isbn 
@@ -28,6 +28,15 @@ block content
                 tr 
                     td
                         input#buttonC(type="submit",value="저장")
+    div#myComment 
+        form(action="") 
+            input(type="submit", value="내 리뷰")
+        
+        div#showMyComment 
+            - const myhtml = myResult 
+            h3 total search : #{myCount}
+            div !{myhtml}
+    
     hr
     - const html = result 
     h3 total search: #{count}
