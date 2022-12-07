@@ -127,16 +127,13 @@ router.get('/ratingRank',(req,res,next) => {
 
 router.get('/comment',(req,res,next) => {
   let str;
-  console.log("touch comment1: ",req.query.buttonC);
-  console.log("touch comment1: ",req.query.bookTitle);
-
   // connect Oracle Database
   async function fun(){
-    const userID = "User15";
-    const isbn = req.query.bookISBN;
-    const title = req.query.bookTitle;
-    const rating = req.query.bookRating;
-    const comment = req.query.bookComment;
+    const userID = "User13";
+    var isbn = req.query.bookISBN;
+    var title = req.query.bookTitle;
+    var rating = req.query.bookRating;
+    var comment = req.query.bookComment;
 
     try{
       connection = await oracledb.getConnection({
@@ -146,19 +143,26 @@ router.get('/comment',(req,res,next) => {
       });
       console.log("Succesfully connected to Oracle!!");
       if(isbn && title && rating && comment) {
-        console.log("touch comment1: ",req.query.bookTitle);
+        console.log("touch comment1: ",rating);
+        console.log("touch comment2: ",comment);
+        console.log("touch comment3: ",isbn);
+        console.log("touch comment4: ",userID);
+        
         str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
               + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+userID+"') ";
         await connection.execute(str);
-        console.log("touch comment1: ",req.query.bookTitle);
-        
-        // connection.execute(str, function(err, result){
+        rating = "";
+        comment="";
+        isbn="";
+
+        // await connection.execute(str, function(err){
         //   if(err) throw err;
         //   console.log("1 record inserted");
         // });
+        // console.log("touch comment1: ",req.query.bookTitle);
 
         connection.commit();
-        console.log("add 1/user:",userID);
+        console.log("add 1 comment:",userID);
       }
       str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
             + "from rating, book, account "
@@ -196,5 +200,5 @@ router.get('/comment',(req,res,next) => {
   fun();  
 })
 
+
 module.exports = router;
-// fun();
