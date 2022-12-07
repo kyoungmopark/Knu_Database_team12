@@ -2,8 +2,10 @@ var express = require('express');
 var router = express.Router();
 const oracledb = require('oracledb');
 let connection;
-const userDB = "pbook";
-const passwordDB = "pbook322";
+
+const userDB = "university";
+const passwordDB = "comp322";
+
 const userID = "User21";
 
 /* GET home page. */
@@ -22,7 +24,7 @@ router.get('/book',(req,res, next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : 'localhost/orclpdb1'
       });
       console.log("Succesfully connected to Oracle!!");
 
@@ -91,7 +93,7 @@ router.get('/reviewAll',(req,res,next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : 'localhost/orclpdb1'
       });
       console.log("Succesfully connected to Oracle!!");
       str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
@@ -143,7 +145,7 @@ router.get('/reviewUser',(req,res,next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : 'localhost/orclpdb1'
       });
       console.log("Succesfully connected to Oracle!!");
       if(isbn && title && rating && comment){
@@ -210,7 +212,7 @@ router.get('/reviewWrite',(req,res,next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : 'localhost/orclpdb1'
       });
       console.log("Succesfully connected to Oracle!!");
       console.log(isbn,title,rating,comment)
@@ -257,7 +259,7 @@ router.get('/ratingRank',(req,res,next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : 'localhost/orclpdb1'
       });
       console.log("Succesfully connected to Oracle!!");
 
@@ -312,7 +314,7 @@ router.get('/comment',(req,res,next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : 'localhost/orclpdb1'
       });
       console.log("Succesfully connected to Oracle!!");
       if(isbn && title && rating && comment) {
