@@ -8,7 +8,7 @@ if [ "${EUID}" != 0 ]; then
 fi
 
 # Pull oracle image from the oracle container registry.
-# Note that you might need to make some kidn of agreement on the oracle website.
+# Note that you might need to make some kind of agreement on the oracle website.
 # See: https://container-registry.oracle.com/ords/f?p=113:4:13898099368784:::::
 echo "Login to oracle container registry using your oracle ID and password."
 docker login container-registry.oracle.com
