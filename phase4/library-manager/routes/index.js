@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const authenticator = require(__dirname + '/../middlewares/authenticator');
 const util = require('util');
 
+const localhostOrcl = 'localhost/orclpdb1';
 const userDB = "university";
 const passwordDB = "comp322";
 
