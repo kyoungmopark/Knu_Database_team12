@@ -19,7 +19,11 @@ docker pull container-registry.oracle.com/database/enterprise:latest
 (cd ./library-manager && docker build . --build-arg NODE_ENV_ARG=production -t comp322-library-manager:latest)
 
 # Run oracle dbms.
+docker rm -f comp322-oracle-dbms || :
 docker run -d --network=host --name comp322-oracle-dbms container-registry.oracle.com/database/enterprise:latest
 
 # Run the application server.
+docker rm -f comp322-library-manager || :
 docker run -d --network=host --name comp322-library-manager comp322-library-manager:latest
+
+echo "Oracle DBMS and NodeJS application server are up and running!"
