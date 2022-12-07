@@ -142,7 +142,12 @@ router.get('/reviewAll',(req,res,next) => {
   fun();  
 })
 /* show only my reviews */
+router.use('/reviewUser', authenticator);
 router.get('/reviewUser',(req,res,next) => {
+  if (!req.jwtPayload) {
+    return res.status(503).json({ error: 'Not authenticated' });
+  }
+
   let str;
   // connect Oracle Database
   async function fun(){
@@ -160,10 +165,10 @@ router.get('/reviewUser',(req,res,next) => {
       console.log("Succesfully connected to Oracle!!");
       if(isbn && title && rating && comment){
         str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
-             + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+userID+"') ";
+             + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+req.jwtPayload.username+"') ";
         await connection.execute(str);
         connection.commit();
-        console.log("add 1 comment:",userID);
+        console.log("add 1 comment:",req.jwtPayload.username);
       }
       isbn = "";
       title = "";
@@ -174,7 +179,7 @@ router.get('/reviewUser',(req,res,next) => {
             + "from rating, book, account "
             + "where rating.book_id = book.isbn "
             + "and account.id = rating.account_id "
-            + "and account.id = '"+userID+"'";
+            + "and account.id = '"+req.jwtPayload.username+"'";
       const qr = await connection.execute(str);
       const count = qr.rows.length;
       let result = '<table id="myReviewTable">';
@@ -234,10 +239,10 @@ router.get('/reviewWrite',(req,res,next) => {
       console.log(isbn,title,rating,comment)
       if(isbn && title && rating && comment){
         str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
-             + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+userID+"') ";
+             + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+req.jwtPayload.username+"') ";
         await connection.execute(str);
         connection.commit();
-        console.log("add 1 comment:",userID);
+        console.log("add 1 comment:",req.jwtPayload.username);
       }
 
       res.render( 'reviewWrite' );
@@ -316,7 +321,12 @@ router.get('/ratingRank',(req,res,next) => {
 })
 
 /* user account info */
+router.use('/myAccount', authenticator);
 router.get('/myAccount',(req,res,next) =>{
+  if (!req.jwtPayload) {
+    return res.status(503).json({ error: 'Not authenticated' });
+  }
+
   // connect Oracle Database
   async function fun(){
     try{
@@ -327,7 +337,7 @@ router.get('/myAccount',(req,res,next) =>{
       });
       console.log("Succesfully connected to Oracle!!");
       const qr = await connection.execute(
-        "select name, email, phone from account where account.id = '" + userID + "'"
+        "select name, email, phone from account where account.id = '" + req.jwtPayload.username + "'"
       )
       console.log("touch rating rank:");
       console.log(qr.rows[0][0])
@@ -382,10 +392,10 @@ router.get('/comment',(req,res,next) => {
         console.log("touch comment1: ",rating);
         console.log("touch comment2: ",comment);
         console.log("touch comment3: ",isbn);
-        console.log("touch comment4: ",userID);
+        console.log("touch comment4: ",req.jwtPayload.username);
         
         str = "INSERT INTO RATING (Rating, Review, Book_id, Account_id) "
-              + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+userID+"') ";
+              + "VALUES("+rating+" , '"+comment+"', '"+isbn+"', '"+req.jwtPayload.username+"') ";
         await connection.execute(str);
         rating = "";
         comment="";
@@ -398,7 +408,7 @@ router.get('/comment',(req,res,next) => {
         // console.log("touch comment1: ",req.query.bookTitle);
 
         connection.commit();
-        console.log("add 1 comment:",userID);
+        console.log("add 1 comment:",req.jwtPayload.username);
       }
       str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
             + "from rating, book, account "
@@ -770,6 +780,10 @@ router.get('/ratingRank',(req,res,next) => {
 
 router.use('/comment', authenticator);
 router.get('/comment',(req,res,next) => {
+  if (!req.jwtPayload) {
+    return res.status(503).json({ error: 'Not authenticated' });
+  }
+
   let str;
   // connect Oracle Database
   async function fun(){
