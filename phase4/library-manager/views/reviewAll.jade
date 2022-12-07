@@ -2,6 +2,7 @@ extends layout
 
 block content
     h1 후기
+    hr
     //- a(href="./reviewWrite") Write
     //- button 
     //-     a(href="./reviewWrite") Write
@@ -14,4 +15,4 @@ block content
     hr
     - const html = result 
     h3 total search: #{count}
-    div !{html} 
+    div.reviews !{html} 

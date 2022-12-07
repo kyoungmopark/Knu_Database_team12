@@ -25,7 +25,7 @@ router.get('/book',(req,res, next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : localhostOrcl
       });
       console.log("Succesfully connected to Oracle!!");
 
@@ -54,9 +54,13 @@ router.get('/book',(req,res, next) => {
       const qr = await connection.execute(str)
       const count = qr.rows.length;
 
-      console.log(qr.rows.length);
+      // console.log(qr.rows[0]);
       let result = '<table>';
-      for( let i = 1; i < count; i ++) {
+      // add metaData
+      for(let k =0; k < qr.metaData.length;k++){
+        result = result + "<th>" +qr.metaData[k].name + "</th>";
+      }
+      for( let i = 0; i < count; i ++) {
         result = result + '<tr>';
         result = result + '<td><a href="https://isbnsearch.org/isbn/' + qr.rows[i][0] + '">'+qr.rows[i][0] + '</a></td>';
         result = result + '<td>' + qr.rows[i][1] +'</td>';
@@ -94,7 +98,7 @@ router.get('/reviewAll',(req,res,next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : localhostOrcl
       });
       console.log("Succesfully connected to Oracle!!");
       str = "select book.isbn, book.title, rating.rating, rating.review, account.name "
@@ -104,6 +108,10 @@ router.get('/reviewAll',(req,res,next) => {
       const qr = await connection.execute(str);
       const count = qr.rows.length;
       let result = '<table>';
+      // add metaData
+      for(let k =0; k < qr.metaData.length;k++){
+        result = result + "<th>" +qr.metaData[k].name + "</th>";
+      }
       for( let i = 0; i < count; i ++) {
         result = result + '<tr>';
         result = result + '<td><a href="https://isbnsearch.org/isbn/' + qr.rows[i][0] + '">'+qr.rows[i][0] + '</a></td>';
@@ -146,7 +154,7 @@ router.get('/reviewUser',(req,res,next) => {
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : localhostOrcl
       });
       console.log("Succesfully connected to Oracle!!");
       if(isbn && title && rating && comment){
@@ -168,7 +176,11 @@ router.get('/reviewUser',(req,res,next) => {
             + "and account.id = '"+userID+"'";
       const qr = await connection.execute(str);
       const count = qr.rows.length;
-      let result = '<table>';
+      let result = '<table id="myReviewTable">';
+      // add metaData
+      for(let k =0; k < qr.metaData.length;k++){
+        result = result + "<th>" +qr.metaData[k].name + "</th>";
+      }
       for( let i = 0; i < count; i ++) {
         result = result + '<tr>';
         result = result + '<td><a href="https://isbnsearch.org/isbn/' + qr.rows[i][0] + '">'+qr.rows[i][0] + '</a></td>';
@@ -177,7 +189,7 @@ router.get('/reviewUser',(req,res,next) => {
         result = result + '<td>' + qr.rows[i][3] +'</td>';
         result = result + '<td>' + qr.rows[i][4] +'</td>';
         result = result + '<td><button>modify</button></td>';
-        result = result + '<td><button>delete</button></td>';
+        result = result + '<td><button onclick="deleteReview()">delete</button></td>';
         result = result + '</tr>';
       }
       result = result + '</table>';
@@ -199,6 +211,8 @@ router.get('/reviewUser',(req,res,next) => {
 
   fun();  
 })
+/* delete review */
+
 /* write review 
 router.get('/reviewWrite',(req,res,next) => {
   let str;
@@ -247,20 +261,15 @@ router.get('/reviewWrite',(req, res, next) => {
   res.render('reviewWrite')
 })
 
-// router.get('/', function(req, res, next) {
-//   // res.render('view folder/jade file name');
-//   res.render('index');
-// });
-
+/* the most comment : top 10 */
 router.get('/ratingRank',(req,res,next) => {
-  console.log("touch rank: ");
   // connect Oracle Database
   async function fun(){
     try{
       connection = await oracledb.getConnection({
         user  : userDB,
         password  : passwordDB,
-        connectionString  : 'localhost/orcl'
+        connectionString  : localhostOrcl
       });
       console.log("Succesfully connected to Oracle!!");
 
@@ -275,6 +284,10 @@ router.get('/ratingRank',(req,res,next) => {
       console.log("touch rating rank:");
       console.log(qr.rows[0][0])
       let result = '<table>';
+      // add metaData
+      for(let k =0; k < qr.metaData.length;k++){
+        result = result + "<th>" +qr.metaData[k].name + "</th>";
+      }
       for( let i = 0; i < 10; i ++) {
         result = result + '<tr>';
         result = result + '<td>' + qr.rows[i][0] +'</td>';
@@ -300,6 +313,52 @@ router.get('/ratingRank',(req,res,next) => {
 
   fun();
 })
+
+/* user account info */
+router.get('/myAccount',(req,res,next) =>{
+  // connect Oracle Database
+  async function fun(){
+    try{
+      connection = await oracledb.getConnection({
+        user  : userDB,
+        password  : passwordDB,
+        connectionString  : localhostOrcl
+      });
+      console.log("Succesfully connected to Oracle!!");
+      const qr = await connection.execute(
+        "select name, email, phone from account where account.id = '" + userID + "'"
+      )
+      console.log("touch rating rank:");
+      console.log(qr.rows[0][0])
+      let name = qr.rows[0][0];
+      let mail = qr.rows[0][1];
+      let number = qr.rows[0][2];
+
+      res.render( 'myAccount', { name: name, mail: mail, number: number } );
+
+    } catch(err){
+      console.log("Oracle connection Error: ", err);
+    } finally{
+      if(connection){
+        try{
+          await connection.close();
+        } catch(err){
+          console.log(err);
+        }
+      }
+    }
+  }
+
+  fun();
+
+})
+
+// router.get('/', function(req, res, next) {
+//   // res.render('view folder/jade file name');
+//   res.render('index');
+// });
+
+
 
 router.get('/comment',(req,res,next) => {
   let str;

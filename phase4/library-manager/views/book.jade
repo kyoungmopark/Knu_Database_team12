@@ -9,15 +9,15 @@ block content
         table
             tr 
                 td 
-                    select(name="searchOption")
+                    select.selectbox(name="searchOption")
                         option(value="bookTitle" selected) Book title
                         option(value="authorName") Author Name
                         option(value="ISBN") ISBN
                 td  
-                    input(type="text", name="searchWord", value="")
+                    input.inputbox(type="text", name="searchWord", value="")
                 td
-                    input(type="submit", value="Search")
+                    input.buttons(type="submit", value="Search")
     hr
     - const html = result 
-    h3 total search: #{count}
-    div !{html} 
+    h4 Total search: #{count}
+    div.book !{html} 

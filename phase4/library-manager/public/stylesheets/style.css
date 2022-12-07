@@ -1,3 +1,148 @@
+.topbar h1{
+  font-size: 70px;
+  font-weight: 600;
+  background-image: linear-gradient(to left, #553c9a, #b393d3);
+  /* background-image: conic-gradient(#553c9a, #ee4b2b, #00c2cb);/ */
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.leftbar ul{
+  padding:20px;
+  background-color:#faf8fc;
+  color:blueviolet;
+}
+
+.leftbar a{
+  text-decoration : none;
+}
+
+.leftbar a:hover{
+  color:red;
+  text-decoration: underline;
+}
+
+.buttons {
+  width: 180px;
+  height: 60px;
+  cursor: pointer;
+  background: #efe9f6;
+  border: 1px solid #b393d3;
+  outline: none;
+  transition: 1s ease-in-out;
+  /* color: #efe9f6; */
+}
+
+.inputbox {
+  width: 180px;
+  height: 60px;
+  background: transparent;
+  border: 1px solid #b393d3;
+  outline: none;
+  transition: 1s ease-in-out;
+}
+
+input {
+  width: 180px;
+  height: 60px;
+  background: transparent;
+  border: 1px solid #b393d3;
+  outline: none;
+  transition: 1s ease-in-out;
+}
+
+.selectbox {
+  width: 180px;
+  height: 60px;
+  background: transparent;
+  border: 1px solid #b393d3;
+  outline: none;
+  transition: 1s ease-in-out;
+}
+
+select {
+  width: 180px;
+  height: 60px;
+  background: transparent;
+  border: 1px solid #b393d3;
+  outline: none;
+  transition: 1s ease-in-out;
+}
+
+.book tr:nth-child(even) {
+  background-color: #f6e9f6;
+}
+.book tr:nth-child(odd) {
+  background-color: #e7c5e7;
+}
+.book th {
+  background-color: #8366e2;
+  color: white;
+}
+
+.reviews tr:nth-child(even) {
+  background-color: #f6e9f6;
+}
+.reviews tr:nth-child(odd) {
+  background-color: #e7c5e7;
+}
+.reviews th {
+  background-color: #8366e2;
+  color: white;
+}
+.reviews button{
+  cursor: pointer;
+  background: #efe9f6;
+  border: 1px solid #b393d3;
+  outline: none;
+  transition: 1s ease-in-out;
+}
+
+.rank tr:nth-child(even) {
+  background-color: #f6e9f6;
+}
+.rank tr:nth-child(odd) {
+  background-color: #e7c5e7;
+}
+.rank th {
+  background-color: #8366e2;
+  color: white;
+}
+
+.account table{
+  border: 1px #a39485 solid;
+  font-size: .9em;
+  box-shadow: 0 2px 5px rgba(0,0,0,.25);
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.account th {
+  text-align: left;
+}
+  
+.account thead {
+  font-weight: bold;
+  color: #fff;
+  background: #533b88;
+}
+  
+.account td, th {
+  padding: 1em .5em;
+  vertical-align: middle;
+}
+  
+.account td {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  background: #fff;
+}
+
+/* .noBorder {
+    border:none !important;
+} */ 
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;

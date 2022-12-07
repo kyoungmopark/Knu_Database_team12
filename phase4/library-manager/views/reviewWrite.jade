@@ -2,10 +2,11 @@ extends layout
 
 block content
     h1 후기 작성
+    hr
     form(action="./reviewUser", method="get") 
         table 
             tr 
-                td isbn 
+                td ISBN 
                 td 
                     input(type="text", name="bookISBN")
             tr 

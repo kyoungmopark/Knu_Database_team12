@@ -2,6 +2,7 @@ extends layout
 
 block content
     h1 내 후기
+    hr
     form(action="./reviewWrite", method="get") 
         input(type="submit", value="Write")
     form(action="./reviewAll", method="get") 
@@ -9,4 +10,4 @@ block content
     hr
     - const html = result 
     h3 total search: #{count}
-    div !{html} 
+    div.reviews !{html} 
