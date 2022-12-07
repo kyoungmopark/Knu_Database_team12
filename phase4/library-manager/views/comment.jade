@@ -1,0 +1,38 @@
+extends layout
+
+block content
+    h1 후기
+    div#startComment
+        form
+            input#writeComment(type="button", value="쓰기")
+    div#inputComment
+        form 
+            - const userName = Person9;
+            - const userID = User9;
+            table 
+                tr 
+                    td userID 
+                    td= userID
+                tr 
+                    td isbn 
+                    td 
+                        input(type="text", name="bookISBN")
+                tr 
+                    td Title 
+                    td 
+                        input(type="text", name="bookTitle")
+                tr 
+                    td Rating 
+                    td 
+                        input(type="text", name="bookRating")
+                tr 
+                    td Comment 
+                    td 
+                        input(type="text", name="bookComment")
+                tr 
+                    td
+                        input#buttonC(type="submit",value="저장")
+    hr
+    - const html = result 
+    h3 total search: #{count}
+    div !{html} 
