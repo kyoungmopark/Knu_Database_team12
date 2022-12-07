@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    h1 후기
+    //- a(href="./reviewWrite") Write
+    //- button 
+    //-     a(href="./reviewWrite") Write
+    //- a(href="./reviewWrite") write review
+    form(action="./reviewWrite", method="get") 
+        input(type="submit", value="Write")
+
+    form(action="./reviewUser", method="get") 
+        input(type="submit", value="My Review")
+    hr
+    - const html = result 
+    h3 total search: #{count}
+    div !{html} 

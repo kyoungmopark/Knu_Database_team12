@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    h1 후기 작성
+    form(action="./reviewUser", method="get") 
+        table 
+            tr 
+                td isbn 
+                td 
+                    input(type="text", name="bookISBN")
+            tr 
+                td Title 
+                td 
+                    input(type="text", name="bookTitle")
+            tr 
+                td Rating 
+                td 
+                    input(type="text", name="bookRating")
+            tr 
+                td Comment 
+                td 
+                    input(type="text", name="bookComment")
+            tr 
+                td
+                    input#buttonC(type="submit",value="Save")

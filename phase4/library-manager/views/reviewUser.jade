@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    h1 내 후기
+    form(action="./reviewWrite", method="get") 
+        input(type="submit", value="Write")
+    form(action="./reviewAll", method="get") 
+        input(type="submit", value="All Review")
+    hr
+    - const html = result 
+    h3 total search: #{count}
+    div !{html} 
