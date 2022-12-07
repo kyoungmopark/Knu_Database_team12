@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title booksearch page
+    h1 KNU Library System
+  body
+    input(type="text", placeholder="도서명")
+    input(type="text", placeholder="저자")
+    input(type="text", placeholder="출판연도")
+    input(type="text", placeholder="대출일")
+    input(type="text", placeholder="반납일")
+    ul#searchclicked
+        li: a(href="booksearchclicked") 검색
+    ul#addbook
+        li: a(href="addbook") 도서 추가하기
+    ul#updatebook
+        li: a(href="updatebook") 도서정보 수정하기
+    ul#deletebook
+        li: a(href="deletebook") 도서정보 삭제하기
+
+    block content

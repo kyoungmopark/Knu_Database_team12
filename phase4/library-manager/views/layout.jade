@@ -1,7 +1,27 @@
 doctype html
 html
   head
-    title= title
+    title= KNU_DATABASE_TEAM12
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+    h1 KNU Library System
+  body 
+    input(type="text", placeholder="ID")
+    input(type="text", placeholder="Password")
+    ul#login
+    li: a(href="login") login
+
+    h5 비밀번호를 잊으셨나요?
+    h5 계정 만들기 
+
+    ul#Account
+        li: a(href="account") Account
+
+    ul#BookSearch
+      li: a(href="booksearch") Book Search
+
+    ul#BookInfo
+      li: a(href="bookinfo") BookInfo
+
+
     block content
+
